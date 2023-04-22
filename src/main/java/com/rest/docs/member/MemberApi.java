@@ -47,13 +47,13 @@ public class MemberApi {
     public void modify(@PathVariable Long id, @RequestBody @Valid MemberModificationRequest dto) {
         final Member member = memberRepository.findById(id).get();
         member.modify(dto.getName());
-        //영속성 컨텍스트가 살아있으므로, 변경감지를 통해 DB에 적용된다.
-//        memberRepository.save(member);
+        //명시적으로 save 필요
+        memberRepository.save(member);
     }
 
     @GetMapping
     public Page<MemberResponse> getMembers(@PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable) {
         return memberRepository.findAll(pageable).map(MemberResponse::new);
-        //page객체를 map을 통해 변환해서 DTO로 변환
+        //page객체를 map을 통해 변환해서 DTO로 변경
     }
 }

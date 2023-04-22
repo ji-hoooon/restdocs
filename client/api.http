@@ -1,4 +1,37 @@
-GET {{host}}/
+#인덱스 호출하는 API
+
+#GET {{host}}/
+#Content-Type: application/json
+#
+
+#MemberApi 테스트
+# 1. Member 단일 조회
+# 2. Member 생성
+# 3. Member 수정
+# 4. Member 페이징 조회
+
+# 1. Member 단일 조회
+GET {{host}}/api/members/5
+Content-Type: application/json
+// #세개가 하나의 메서드의 종료하는 구간
+###
+# 2. Member 생성
+POST {{host}}/api/members
 Content-Type: application/json
 
+{
+  "email": "zoo@bbb.com",
+  "name": "zoo"
+}
 ###
+# 3. Member 수정
+PUT {{host}}/api/members/1
+Content-Type: application/json
+
+{
+  "name": "new-yun"
+}
+###
+# 4. Member 페이징 조회
+GET {{host}}/api/members?page=0&size=10
+Content-Type: application/json
