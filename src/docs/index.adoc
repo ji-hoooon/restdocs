@@ -1,0 +1,23 @@
+// 문서에 대한 템플릿 추가 필요
+= REST DOCS 제목
+Andy Wilkinson;
+:doctype: book
+:icons: font
+:source-highlighter: highlights
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[Member-API]]
+== Member API
+// snippet 파일을 연동
+include::{snippets}/
+
+[[Member-단일-조회]]
+=== Member 단일 조회
+[[Member-페이징-조회]]
+=== Member 페이징 조회
+[[Member-생성]]
+=== Member 생성
+[[Member-수정]]
+=== Member 수정

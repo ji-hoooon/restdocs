@@ -33,3 +33,48 @@ dependencies {
 
 ## 과정
 1. member 엔티티 추가 후, 데이터 셋업 완료
+2. http.api로 간단한 테스트 완료
+3. 모킹 테스트로 Test Code 작성해 테스트 완료
+   - import org.springframework.test.web.servlet.request.MockMvcRequestBuilders; -> O
+   - import org.springframework.test.web.servlet.result.MockMvcResultMatchers; -> X
+   - 자동으로 snippets 생성하기 위해 필요한 코드들
+   ```java
+   @ExtendWith(RestDocumentationExtension.class)
+   //RestDoc 짜기 위해 필요한 클래스를 빈으로 등록하기 위한 어노테이션
+   
+   @BeforeEach
+    void setUp(
+            final WebApplicationContext context,
+            final RestDocumentationContextProvider provider
+    ) {
+        this.mvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
+                .build();
+    }
+   
+   .andDo(print()) //요청과 응답값 확인
+   .andDo(MockMvcRestDocumentation.document("{class-name}/{method-name}"))
+   .andExpect(status().isOk()
+   ```
+4. 테스트 코드로 인해 자동으로 생성되는 Snippets 파일
+   - 커스텀해서 추가적으로 생성 가능
+     - curl-request.adoc / httpie-request.adoc
+     - http-request.adoc / http-response.adoc
+     - request-body.adoc / response-body.adoc
+5. index.adoc 작성
+    - base_dir 설정해야 
+    ```yaml
+       tasks.test {
+        outputs.dir(snippetsDir)
+    }
+    
+    tasks.asciidoctor {
+    dependsOn(tasks.test)
+    val snippets = file("build/generated-snippets")
+    configurations("asciidoctorExt")
+    attributes["snippets"] = snippets
+    inputs.dir(snippets)
+    sources { include("**/index.adoc") }
+    baseDirFollowsSourceFile()
+    }
+    ```

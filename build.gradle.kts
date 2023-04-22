@@ -15,6 +15,14 @@ configurations {
         extendsFrom(configurations.annotationProcessor.get())
     }
 }
+lateinit var asciidoctorExt: Configuration
+val snippetsDir = file("build/generated-snippets")
+
+asciidoctorj {
+    asciidoctorExt = configurations.create("asciidoctorExt")
+}
+
+
 
 repositories {
     mavenCentral()
