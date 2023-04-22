@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,9 +40,7 @@ public class Member {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Member(
-            final String email,
-            final String name
+    public Member(final String email, final String name
 //          ,final MemberStatus status
     ) {
         this.email = email;
@@ -51,7 +50,7 @@ public class Member {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void modify(final String name){
+    public void modify(final String name) {
         this.name = name;
     }
 }
