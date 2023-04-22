@@ -129,3 +129,23 @@ dependencies {
    ```yaml
    asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
    ```
+   
+## 문서 커스텀이 필요한 이유
+- API 스펙 전달에 어려움이 존재하는 현재 문서
+- 필요한 형식
+  1. Request Fields (API 컨텍스트를 정확하게 전달하기 위해)
+     - Field
+     - Type
+     - Required
+     - Description
+     - Length
+  2. HTTP request
+     - Path Parameters
+  3. HTTP response
+     - Response Fields
+       - Field
+       - Type
+       - Required
+       - Description
+       - Length
+
