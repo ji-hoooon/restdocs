@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
+//API 테스트를 위한 컨트롤러
 public class IndexController {
 
     @GetMapping
