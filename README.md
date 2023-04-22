@@ -63,4 +63,39 @@ dependencies {
      - request-body.adoc / response-body.adoc
 5. index.adoc 작성
     - Member-API 작성
-      - 
+6. build.gradle에 CLU로 문서파일 만드는 테스크 빌드 정의
+    ```yaml
+    //테스크 빌드 정의한 CLU로 문서파일 생성
+    tasks.test {
+        outputs.dir(snippetsDir)
+    }
+    
+    tasks.asciidoctor {
+        dependsOn(tasks.test)
+        val snippets = file("build/generated-snippets")
+        configurations("asciidoctorExt")
+        attributes["snippets"] = snippets
+        inputs.dir(snippets)
+        sources { include("**/index.adoc") }
+        baseDirFollowsSourceFile()
+    }
+    ```
+7. gradle에서 asciidoctor로 추정 문서 만든다.
+   - gradle asciidoctor 수행
+   - 추정 문서 :
+     - Spring REST Docs에서 추정 문서란, 테스트 메서드를 실행하고 적용된 MockMvc의 결과를 바탕으로 자동으로 생성된 문서입니다. 추정 문서는 Spring REST Docs가 자동으로 생성하는 일부 문서 섹션을 말합니다. 일반적으로 추정 문서는 예제 요청과 응답 페이로드, 응답 헤더 및 응답 상태 코드를 보여주는 일반적인 REST API 응답에 대한 문서를 생성합니다.
+     - 추정 문서는 대개 수동으로 작성해야하는 수고를 덜어주기 때문에 개발자들이 RESTful API의 문서화 작업을 효율적으로 할 수 있게 도와줍니다.
+8. 로컬 서버에 생성된 문서를 웹 서버에 배포
+   - 추정 문서를 웹 서버에 퍼블리싱하기 위한 코드
+   ```yaml
+   tasks.bootJar {
+    dependsOn(tasks.asciidoctor)
+    from("${tasks.asciidoctor.get().outputDir}") {
+        into("static/docs")
+     }
+   }
+   ```
+   - gardle bootJar 수행
+   - 수행되면 rest-docs-0.0.1-SNAPSHOT.jar 생성
+   - cmd로 java -jar rest-docs-0.0.1-SNAPSHOT.jar 수행
+   - localhost:8383/docs/index.html로 접근가능
