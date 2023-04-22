@@ -99,3 +99,33 @@ dependencies {
    - 수행되면 rest-docs-0.0.1-SNAPSHOT.jar 생성
    - cmd로 java -jar rest-docs-0.0.1-SNAPSHOT.jar 수행
    - localhost:8383/docs/index.html로 접근가능
+
+
+## 리팩토링 대상
+1. 중복 코드 제거
+   - 어노테이션
+   - 의존성 주입
+   - MockMvc 세팅
+   - 테스트 결과 출력
+   - Snippets 생성
+2. JSON 표현 개선
+   - 단순 문자열로 JSON 처리
+   - 복잡한 JSON의 경우에 유지보수가 어렵다.
+3. JSON 포맷팅
+   - 오른쪽으로 기울어지는 문제
+
+## 리팩토링 수행
+1. RestDocsConfiguration 작성
+   - 테스트 메서드마다 반복되는 코드의 중복을 제거하고 
+   - 제목 규칙을 설정하고, 문서를 식별하기 좋게 생성하도록 설정한다.
+2. TestSupport 작성
+   - RestDocs을 위한 테스트 설정 클래스을 임포트하고 테스트 코드를 쉽게 작성하기 위한 클래스로 관례적인 코드를 모아둔다.
+3. 작성한 클래스를 이용해서 테스트 리팩토링
+   - TestSupport를 상속해서 반복적이고 관례적인 코드를 제거한다.
+4. JSON을 위한 resources 파일 작성
+   - json.member-api 디렉토리 생성해 각각의 테스트 메서드에 필요한 JSON 작성
+5. 최종 확인을 위해 gradle asciidoctor -x test 수행
+6. dependencies에 추가하지 않아서 생기는 에러
+   ```yaml
+   asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
+   ```

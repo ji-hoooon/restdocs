@@ -43,7 +43,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-
+    asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
 }
 
 //tasks 블록에서는 먼저 useJUnitPlatform() 메소드를 사용하여 JUnit 5로 테스트를 실행하도록 설정합니다.
