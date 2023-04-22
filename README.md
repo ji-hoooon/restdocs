@@ -56,25 +56,11 @@ dependencies {
    .andDo(MockMvcRestDocumentation.document("{class-name}/{method-name}"))
    .andExpect(status().isOk()
    ```
-4. 테스트 코드로 인해 자동으로 생성되는 Snippets 파일
-   - 커스텀해서 추가적으로 생성 가능
+4. 테스트 클래스를 실행하면 자동으로 생성되는 Snippets 파일
+   - 커스텀해서 추가적으로 생성도 가능
      - curl-request.adoc / httpie-request.adoc
      - http-request.adoc / http-response.adoc
      - request-body.adoc / response-body.adoc
 5. index.adoc 작성
-    - base_dir 설정해야 
-    ```yaml
-       tasks.test {
-        outputs.dir(snippetsDir)
-    }
-    
-    tasks.asciidoctor {
-    dependsOn(tasks.test)
-    val snippets = file("build/generated-snippets")
-    configurations("asciidoctorExt")
-    attributes["snippets"] = snippets
-    inputs.dir(snippets)
-    sources { include("**/index.adoc") }
-    baseDirFollowsSourceFile()
-    }
-    ```
+    - Member-API 작성
+      - 
