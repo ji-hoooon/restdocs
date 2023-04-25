@@ -161,10 +161,7 @@ dependencies {
    - pathParameters / parameterWithName
    - requestFields / fieldWithPath
    - responseFields / fieldWithPath
-3. 필수값 추가 필요
-
-## 문서 커스텀하기 (2)
-1. 필수값 여부 추가를 위해서는 스니펫 템플릿 변경 필요
+3. 필수값 여부 추가를 위해서는 스니펫 템플릿 변경 필요
 ```yaml
 # /src/test/resources/org/springframework/restdocs/templates
 
@@ -204,6 +201,68 @@ dependencies {
 {{/fields}}
 |===
 ```
+4. gradle clean asciidoctor
+5. 기능별 API의 분리 필요
 
-2. gradle clean asciidoctor
-
+## 문서 커스텀하기 (2)
+1. 인텔리제이 기능을 이용한 추출
+   - option+enter : Extract Include Directive
+2. API 서버에 대한 정보를 제공하는 overview
+   - HOST 정보
+   - HTTP 상태코드 정보
+   - 커넥션 타임아웃 정보
+   - 비즈니스 용어 사전 정보
+3. 에러 응답 처리
+   - 클래스 정의
+     - ErrorCode
+     - ErrorResponse
+       - 400, 500과 같은 에러에 대한 포맷팅
+       - 여러 가지 에러 사유를 전달하기 위해 배열로 전달
+       - 실무에서는 에러에 해당하는 code를 통해 에러 파악을 용이하게 한다.
+     - GlobalExceptionHandler
+       - 다른 예외로는 에러가 나지 않도록 컨트롤한다.
+       - 애플리케이션에서 예외 발생을 글로벌로 처리해주는 핸들러
+       - 유효성 검사 실패, 그 외 예외를 다루는 메서드 작성
+   - 테스트 코드에서만 사용할 API 클래스 작성
+   - 필수값에 빈 문자열과 이메일 형식을 틀린 에러테스트
+    ```json
+    {
+      "message": " Invalid Input Value",
+      "status": 400,
+      "errors": [
+        {
+          "field": "name",
+          "value": "",
+          "reason": "must not be empty"
+        },
+        {
+          "field": "email",
+          "value": "zobbb.com",
+          "reason": "must be a well-formed email address"
+        }
+      ],
+      "code": "C001",
+      "timestamp": "2023-04-25T11:02:05.0944"
+    }
+    ```
+   - 문서화를 위한 에러 템플릿
+    ```java
+    responseFields(
+            fieldWithPath("message").description("에러 메시지"),
+            fieldWithPath("status").description("Http Status Code"),
+            fieldWithPath("code").description("Error Code"),
+            fieldWithPath("timestamp").description("에러 발생 시간"),
+            fieldWithPath("errors").description("Error 값 배열 값"),
+            fieldWithPath("errors[0].field").description("문제 있는 필드"),
+            fieldWithPath("errors[0].value").description("문제가 있는 값"),
+            fieldWithPath("errors[0].reason").description("문재가 있는 이유")
+            )   
+    ```
+   - 오버뷰에 에러 응답 추가
+    ```json
+    [[overview-error-response]]
+    === HTTP Error Response
+    
+    operation::rest-document/sample-request[snippets='http-response,response-fields']   
+    ```
+   - 컬렉션의 경우 null이 아니라 빈 배열로 리턴해주는게 화면처리가 더 쉽다.

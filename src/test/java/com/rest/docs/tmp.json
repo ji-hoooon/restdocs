@@ -1,0 +1,18 @@
+{
+  "message": " Invalid Input Value",
+  "status": 400,
+  "errors": [
+    {
+      "field": "name",
+      "value": "",
+      "reason": "must not be empty"
+    },
+    {
+      "field": "email",
+      "value": "zobbb.com",
+      "reason": "must be a well-formed email address"
+    }
+  ],
+  "code": "C001",
+  "timestamp": "2023-04-25T11:02:05.0944"
+}
