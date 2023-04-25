@@ -33,7 +33,7 @@ public class TestSupport {
     protected MockMvc mvc;
 
     @Autowired
-    protected RestDocumentationResultHandler write;
+    protected RestDocumentationResultHandler restDocs;
     @Autowired
     private ResourceLoader resourceLoader;
 
@@ -46,7 +46,7 @@ public class TestSupport {
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 //매번 반복되는 코드를 추가
                 .alwaysDo(MockMvcResultHandlers.print())
-                .alwaysDo(write)
+                .alwaysDo(restDocs)
                 //JSON 포맷팅과 쉽게 작성하기 위한 클래스
                 .build();
     }

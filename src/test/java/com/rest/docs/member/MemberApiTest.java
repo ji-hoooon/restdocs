@@ -17,6 +17,9 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+//import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -61,9 +64,15 @@ class MemberApiTest extends TestSupport {
                 )
 //                .andDo(print()) //요청과 응답값 확인
 //                .andDo(MockMvcRestDocumentation.document("{class-name}/{method-name}"))
-                .andExpect(status().isOk()
-                        //checkpoint: HttpStatus만 확인하는 불안정한 테스트 코드 -> response 값에 대해서 보완 필요
-                );
+                .andExpect(status().isOk())//checkpoint: HttpStatus만 확인하는 불안정한 테스트 코드 -> response 값에 대해서 보완 필요
+                .andDo(
+                        restDocs.document(
+                                //static import 진행
+                                requestParameters(
+                                        //쿼리 파라미터에 대한 문서 작성
+                                        parameterWithName("size").optional().description("size"),
+                                        parameterWithName("page").optional().description("page")
+                        )));
     }
 
     @Test
@@ -76,9 +85,22 @@ class MemberApiTest extends TestSupport {
                 )
 //                .andDo(print()) //요청과 응답값 확인
 //                .andDo(MockMvcRestDocumentation.document("{class-name}/{method-name}"))
-                .andExpect(status().isOk()
-                        //checkpoint: HttpStatus만 확인하는 불안정한 테스트 코드 -> response 값에 대해서 보완 필요
-                );
+                .andExpect(status().isOk())//checkpoint: HttpStatus만 확인하는 불안정한 테스트 코드 -> response 값에 대해서 보완 필요
+                .andDo(
+                        restDocs.document(
+                                //static import 진행
+                                pathParameters(
+                                        //쿼리 파라미터에 대한 문서 작성
+                                        parameterWithName("id").optional().description("Member ID")
+
+                                ),
+                                //응답 필드에 대한 문서 작성
+                                responseFields(
+                                        fieldWithPath("id").description("ID"),
+                                        fieldWithPath("name").description("name"),
+                                        fieldWithPath("email").description("email")
+                                )
+                        ));
     }
 
     @Test
@@ -97,7 +119,16 @@ class MemberApiTest extends TestSupport {
                 )
 //                .andDo(print())
 //                .andDo(MockMvcRestDocumentation.document("{class-name}/{method-name}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(
+                        restDocs.document(
+                                requestFields(
+                                        //optional이 아니라 필수 값이므로
+                                        fieldWithPath("name").description("name"),
+                                        fieldWithPath("email").description("email")
+                                )
+                        )
+                );
     }
 
     @Test
@@ -114,6 +145,20 @@ class MemberApiTest extends TestSupport {
                 )
 //                .andDo(print())
 //                .andDo(MockMvcRestDocumentation.document("{class-name}/{method-name}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(
+                        restDocs.document(
+                                //static import 진행
+                                pathParameters(
+                                        //쿼리 파라미터에 대한 문서 작성
+                                        parameterWithName("id").optional().description("Member ID")
+
+                                ),
+                                requestFields(
+                                        //optional이 아니라 필수 값이므로
+                                        fieldWithPath("name").description("name")
+                                )
+                        )
+                );
     }
 }

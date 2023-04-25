@@ -14,37 +14,17 @@ Andy Wilkinson;
 
 [[Member-단일-조회]]
 === Member 단일 조회
-include::{snippets}/member-api-test/member_get_test/curl-request.adoc[]
-include::{snippets}/member-api-test/member_get_test/http-request.adoc[]
-include::{snippets}/member-api-test/member_get_test/http-response.adoc[]
-include::{snippets}/member-api-test/member_get_test/httpie-request.adoc[]
-include::{snippets}/member-api-test/member_get_test/request-body.adoc[]
-include::{snippets}/member-api-test/member_get_test/response-body.adoc[]
+// 띄어쓰기 하면 안됨
+operation::member-api-test/member_get_test[snippets='http-request,path-parameters,response-fields']
 
 [[Member-페이징-조회]]
 === Member 페이징 조회
-include::{snippets}/member-api-test/member_page_test/curl-request.adoc[]
-include::{snippets}/member-api-test/member_page_test/http-request.adoc[]
-include::{snippets}/member-api-test/member_page_test/http-response.adoc[]
-include::{snippets}/member-api-test/member_page_test/httpie-request.adoc[]
-include::{snippets}/member-api-test/member_page_test/request-body.adoc[]
-include::{snippets}/member-api-test/member_page_test/response-body.adoc[]
-
+operation::member-api-test/member_page_test[snippets='http-request,request-parameters,http-response']
 
 [[Member-생성]]
 === Member 생성
-include::{snippets}/member-api-test/member_create_test/curl-request.adoc[]
-include::{snippets}/member-api-test/member_create_test/http-request.adoc[]
-include::{snippets}/member-api-test/member_create_test/http-response.adoc[]
-include::{snippets}/member-api-test/member_create_test/httpie-request.adoc[]
-include::{snippets}/member-api-test/member_create_test/request-body.adoc[]
-include::{snippets}/member-api-test/member_create_test/response-body.adoc[]
+operation::member-api-test/member_create_test[snippets='http-request,request-fields,http-response']
 
 [[Member-수정]]
 === Member 수정
-include::{snippets}/member-api-test/member_modify_test/curl-request.adoc[]
-include::{snippets}/member-api-test/member_modify_test/http-request.adoc[]
-include::{snippets}/member-api-test/member_modify_test/http-response.adoc[]
-include::{snippets}/member-api-test/member_modify_test/httpie-request.adoc[]
-include::{snippets}/member-api-test/member_modify_test/request-body.adoc[]
-include::{snippets}/member-api-test/member_modify_test/response-body.adoc[]
+operation::member-api-test/member_modify_test[snippets='path-parameters,http-request,request-fields,http-response']

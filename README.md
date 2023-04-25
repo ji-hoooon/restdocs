@@ -125,11 +125,13 @@ dependencies {
 4. JSON을 위한 resources 파일 작성
    - json.member-api 디렉토리 생성해 각각의 테스트 메서드에 필요한 JSON 작성
 5. 최종 확인을 위해 gradle asciidoctor -x test 수행
-6. dependencies에 추가하지 않아서 생기는 에러
+6. dependendcies에 추가하지 않아서 생기는 에러
    ```yaml
    asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
    ```
-   
+
+
+
 ## 문서 커스텀이 필요한 이유
 - API 스펙 전달에 어려움이 존재하는 현재 문서
 - 필요한 형식
@@ -148,4 +150,60 @@ dependencies {
        - Required
        - Description
        - Length
+
+## 문서 커스텀하기 (1)
+1. RestDocs 기반으로 문서 작성을 위해 import 패키지 변경
+   - import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get; 
+   - import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post; 
+   - import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+2. 상속한 TestSupport 클래스의 RestDocumentationResultHandler 변수를 이용해 문서 작성
+   - restDocs.document()로 문서 작성 시작
+   - pathParameters / parameterWithName
+   - requestFields / fieldWithPath
+   - responseFields / fieldWithPath
+3. 필수값 추가 필요
+
+## 문서 커스텀하기 (2)
+1. 필수값 여부 추가를 위해서는 스니펫 템플릿 변경 필요
+```yaml
+# /src/test/resources/org/springframework/restdocs/templates
+
+
+# request-fields.snippet
+|===
+|Field|Type|Required|Description|Length
+{{#fields}}
+|{{#tableCellContent}}`+{{path}}+`{{/tableCellContent}}
+|{{#tableCellContent}}`+{{type}}+`{{/tableCellContent}}
+|{{#tableCellContent}}{{^optional}}true{{/optional}}{{#optional}}false{{/optional}}{{/tableCellContent}}
+|{{#tableCellContent}}{{description}}{{/tableCellContent}}
+|{{#tableCellContent}}{{#length}}{{.}}{{/length}}{{/tableCellContent}}
+{{/fields}}
+|===
+
+# request-parameters.snippet
+|===
+|Parameter|Required|Description
+{{#parameters}}
+|{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
+|{{#tableCellContent}}{{^optional}}true{{/optional}}{{#optional}}false{{/optional}}{{/tableCellContent}}
+|{{#tableCellContent}}{{description}}{{/tableCellContent}}
+{{/parameters}}
+|===
+
+
+# response-fields.snippet
+
+|===
+|Path|Type|Required|Description
+{{#fields}}
+|{{#tableCellContent}}`+{{path}}+`{{/tableCellContent}}
+|{{#tableCellContent}}`+{{type}}+`{{/tableCellContent}}
+|{{#tableCellContent}}{{^optional}}true{{/optional}}{{#optional}}false{{/optional}}{{/tableCellContent}}
+|{{#tableCellContent}}{{description}}{{/tableCellContent}}
+{{/fields}}
+|===
+```
+
+2. gradle clean asciidoctor
 
